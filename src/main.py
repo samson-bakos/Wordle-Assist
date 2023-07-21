@@ -327,64 +327,64 @@ with body3:
 
 with body4:
     (
-        word3,
-        col31,
-        col32,
-        col33,
-        col34,
-        col35,
-        done3,
+        word4,
+        col41,
+        col42,
+        col43,
+        col44,
+        col45,
+        done4,
     ) = st.columns([2, 1, 1, 1, 1, 1, 2])
 
-    if st.session_state["recommended3"] is not None:
+    if st.session_state["recommended4"] is not None:
         for i in range(5):
-            word3.write("")
-        word3.write(f"### {st.session_state['recommended3']}")
-        if st.session_state["remaining3"] is not None:
-            word3.write(f"Remaining: {st.session_state['remaining3']}")
+            word4.write("")
+        word4.write(f"### {st.session_state['recommended4']}")
+        if st.session_state["remaining4"] is not None:
+            word4.write(f"Remaining: {st.session_state['remaining4']}")
 
-    entries_list3 = []
-    colors_list3 = []
+    entries_list4 = []
+    colors_list4 = []
 
     # Initialize session states and checkboxes
-    for i, col in enumerate([col31, col32, col33, col34, col35], start=1):
-        session_state_key = f"body3_current_state{i}"
-        checkbox_state_key = f"body3_checkbox_state{i}"
-        text_state_key = f"body3_text_state{i}"
+    for i, col in enumerate([col41, col42, col43, col44, col45], start=1):
+        session_state_key = f"body4_current_state{i}"
+        checkbox_state_key = f"body4_checkbox_state{i}"
+        text_state_key = f"body4_text_state{i}"
 
         current_state = st.session_state.get(session_state_key, 0)
         checkbox_state = st.session_state.get(checkbox_state_key, False)
 
-        letter3 = col.text_input("", "", 1, key=f"body3_text{i}")
+        letter4 = col.text_input("", "", 1, key=f"body4_text{i}")
 
-        entries_list3.append(letter3)
+        entries_list4.append(letter4)
 
-        if col.button("", key=f"body3_button{i}"):
+        if col.button("", key=f"body4_button{i}"):
             current_state = (current_state + 1) % num_states
 
         st.session_state[session_state_key] = current_state
 
         selected_color = states[current_state]["color"]
 
-        colors_list3.append(states[current_state]["name"])
+        colors_list4.append(states[current_state]["name"])
 
         colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
     for i in range(5):
-        done3.write("")
+        done4.write("")
 
-    if done3.button("Done", key="DoneButton3"):
-        if all(item is not "" for item in entries_list3):
-            entries_list3 = [
+    if done4.button("Done", key="DoneButton4"):
+        if all(item is not "" for item in entries_list4):
+            entries_list4 = [
                 item.lower() if isinstance(item, str) else item
-                for item in entries_list3
+                for item in entries_list4
             ]
-            st.session_state["recommended4"] = " ".join(
+            st.session_state["recommended5"] = " ".join(
                 char.upper()
-                for char in solver.solve(letters=entries_list3, colors=colors_list3)
+                for char in solver.solve(letters=entries_list4, colors=colors_list4)
             )
-            st.session_state["remaining4"] = len(st.session_state["words_array"])
+            st.session_state["remaining5"] = len(st.session_state["words_array"])
 
     with body5:
         fill51, fill52, col51, col52, col53, col54, col55, fill53, fill54 = st.columns(
