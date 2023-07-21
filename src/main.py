@@ -65,7 +65,7 @@ with body1:
 
         selected_color = states[current_state]["color"]
 
-        colored_checkbox = f'<div style="background-color: {selected_color}; width: 68px; height: 40px;"></div>'
+        colored_checkbox = f'<div style="background-color: {selected_color}; width: 67px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
 with body2:
