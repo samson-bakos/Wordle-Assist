@@ -147,6 +147,11 @@ with body1:
         done1,
     ) = st.columns([2, 1, 1, 1, 1, 1, 2])
 
+    word1.write("")
+    word1.write("")
+    word1.write("")
+    word1.write("")
+    word1.write("")
     word1.write("### S A I N T")
 
     # Initialize session states and checkboxes
@@ -169,6 +174,15 @@ with body1:
 
         colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
+
+    done1.write("")
+    done1.write("")
+    done1.write("")
+    done1.write("")
+    done1.write("")
+
+    if done1.button("Done", key="DoneButton1"):
+        pass
 
 with body2:
     fill21, fill22, col21, col22, col23, col24, col25, fill23, fill24 = st.columns(9)
