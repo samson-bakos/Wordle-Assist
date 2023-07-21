@@ -65,7 +65,7 @@ with body1:
 
         selected_color = states[current_state]["color"]
 
-        colored_checkbox = f'<div style="background-color: {selected_color}; width: 67px; height: 40px;"></div>'
+        colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
 with body2:
@@ -89,7 +89,7 @@ with body2:
 
         selected_color = states[current_state]["color"]
 
-        colored_checkbox = f'<div style="background-color: {selected_color}; width: 68px; height: 40px;"></div>'
+        colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
 with body3:
@@ -113,7 +113,7 @@ with body3:
 
         selected_color = states[current_state]["color"]
 
-        colored_checkbox = f'<div style="background-color: {selected_color}; width: 68px; height: 40px;"></div>'
+        colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
 with body4:
@@ -137,7 +137,7 @@ with body4:
 
         selected_color = states[current_state]["color"]
 
-        colored_checkbox = f'<div style="background-color: {selected_color}; width: 68px; height: 40px;"></div>'
+        colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
     with body5:
@@ -163,7 +163,7 @@ with body4:
 
             selected_color = states[current_state]["color"]
 
-            colored_checkbox = f'<div style="background-color: {selected_color}; width: 68px; height: 40px;"></div>'
+            colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
             col.markdown(colored_checkbox, unsafe_allow_html=True)
 
     with body6:
@@ -189,11 +189,7 @@ with body4:
 
             selected_color = states[current_state]["color"]
 
-            colored_checkbox = f'<div style="background-color: {selected_color}; width: 68px; height: 40px;"></div>'
+            colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
             col.markdown(colored_checkbox, unsafe_allow_html=True)
 
     st.sidebar.header("Recommended Word:")
-
-    # ADD "DONE" BUTTON TO SIDE OF EACH COLUMN
-    # ADD USAGE SECTION TO SIDEBAR
-    # INTEGRATE LOGICAL CODE
