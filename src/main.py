@@ -26,6 +26,20 @@ st.markdown(
 # -----------------------------------------------------
 
 
+@staticmethod
+def has_unique_rows(array):
+    for row in array:
+        if len(set(row)) == len(row):
+            return True
+    return False
+
+
+@staticmethod
+def remove_non_unique_rows(array):
+    avail_list = [row for row in array if len(set(row)) == len(row)]
+    return np.array(avail_list)
+
+
 class Wordle:
     def __init__(self):
         with open("../data/words.txt", "r") as file:
@@ -53,18 +67,6 @@ class Wordle:
         self.letter_scores = self.letter_scores[:, 1:]
         return self.letter_scores
 
-    @staticmethod
-    def has_unique_rows(array):
-        for row in array:
-            if len(set(row)) == len(row):
-                return True
-        return False
-
-    @staticmethod
-    def remove_non_unique_rows(array):
-        avail_list = [row for row in array if len(set(row)) == len(row)]
-        return np.array(avail_list)
-
     def unique_check(self):
         if has_unique_rows(st.session_state["words_array"]) == True:
             self.avail_words = remove_non_unique_rows(st.session_state["words_array"])
@@ -85,17 +87,20 @@ class Wordle:
         return self.avail_words[best]
 
     def filter_list(self, letters, colors):
+        word1.write(len(st.session_state["words_array"]))
         for key, color in zip(letters, colors):
             if color == "gray":
                 st.session_state["words_array"] = st.session_state["words_array"][
                     ~np.any(st.session_state["words_array"] == key, axis=1)
                 ]
+                word1.write(len(st.session_state["words_array"]))
 
             if color == "green":
                 column = letters.index(key)
                 st.session_state["words_array"] = st.session_state["words_array"][
                     st.session_state["words_array"][:, column] == key
                 ]
+                word1.write(len(st.session_state["words_array"]))
 
             if color == "yellow":
                 column = letters.index(key)
@@ -106,9 +111,9 @@ class Wordle:
                     np.any(st.session_state["words_array"] == key, axis=1)
                 ]
 
-    def solve(self, input=None):
-        if input is not None:
-            self.filter_list(input)
+    def solve(self, letters=None, colors=None):
+        if letters is not None and colors is not None:
+            self.filter_list(letters, colors)
         self.score_letters()
         self.unique_check()
         return self.best_word(self.alphabet_dict)
@@ -116,6 +121,11 @@ class Wordle:
 
 solver = Wordle()
 
+recommended2 = None
+recommended3 = None
+recommended4 = None
+recommended5 = None
+recommended6 = None
 
 # ------------------------------------------------------------------------------
 
@@ -186,13 +196,36 @@ with body1:
 
     if done1.button("Done", key="DoneButton1"):
         if all(item is not "" for item in entries_list1):
-            pass
+            entries_list1 = [
+                item.lower() if isinstance(item, str) else item
+                for item in entries_list1
+            ]
+            recommended2 = "".join(
+                solver.solve(letters=entries_list1, colors=colors_list1)
+            )
+            recommended2 = " ".join(char.upper() for char in recommended2)
 
         # put a warning message here later if this is false
 
 
 with body2:
-    fill21, fill22, col21, col22, col23, col24, col25, fill23, fill24 = st.columns(9)
+    (
+        word2,
+        col21,
+        col22,
+        col23,
+        col24,
+        col25,
+        done2,
+    ) = st.columns([2, 1, 1, 1, 1, 1, 2])
+
+    if recommended2 is not None:
+        word2.write("")
+        word2.write("")
+        word2.write("")
+        word2.write("")
+        word2.write("")
+        word2.write(f"### {recommended2}")
 
     # Initialize session states and checkboxes
     for i, col in enumerate([col21, col22, col23, col24, col25], start=1):
