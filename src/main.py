@@ -448,29 +448,19 @@ with body4:
             st.session_state["remaining6"] = len(st.session_state["words_array"])
 
     with body6:
-        fill61, fill62, col61, col62, col63, col64, col65, fill63, fill64 = st.columns(
-            9
-        )
+        (
+            word6,
+            col61,
+            col62,
+            col63,
+            col64,
+            col65,
+            done6,
+        ) = st.columns([2, 1, 1, 1, 1, 1, 2])
 
-        # Initialize session states and checkboxes
-        for i, col in enumerate([col61, col62, col63, col64, col65], start=1):
-            session_state_key = f"body6_current_state{i}"
-            checkbox_state_key = f"body6_checkbox_state{i}"
-            text_state_key = f"body6_text_state{i}"
-
-            current_state = st.session_state.get(session_state_key, 0)
-            checkbox_state = st.session_state.get(checkbox_state_key, False)
-
-            letter6 = col.text_input("", "", 1, key=f"body6_text{i}")
-
-            if col.button("", key=f"body6_button{i}"):
-                current_state = (current_state + 1) % num_states
-
-            st.session_state[session_state_key] = current_state
-
-            selected_color = states[current_state]["color"]
-
-            colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
-            col.markdown(colored_checkbox, unsafe_allow_html=True)
-
-    st.sidebar.header("Recommended Word:")
+    if st.session_state["recommended6"] is not None:
+        for i in range(5):
+            word5.write("")
+        word5.write(f"### {st.session_state['recommended6']}")
+        if st.session_state["remaining5"] is not None:
+            word5.write(f"Remaining: {st.session_state['remaining6']}")
