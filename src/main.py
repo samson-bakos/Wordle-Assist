@@ -87,20 +87,17 @@ class Wordle:
         return self.avail_words[best]
 
     def filter_list(self, letters, colors):
-        word1.write(len(st.session_state["words_array"]))
         for key, color in zip(letters, colors):
             if color == "gray":
                 st.session_state["words_array"] = st.session_state["words_array"][
                     ~np.any(st.session_state["words_array"] == key, axis=1)
                 ]
-                word1.write(len(st.session_state["words_array"]))
 
             if color == "green":
                 column = letters.index(key)
                 st.session_state["words_array"] = st.session_state["words_array"][
                     st.session_state["words_array"][:, column] == key
                 ]
-                word1.write(len(st.session_state["words_array"]))
 
             if color == "yellow":
                 column = letters.index(key)
@@ -121,11 +118,15 @@ class Wordle:
 
 solver = Wordle()
 
-recommended2 = None
-recommended3 = None
-recommended4 = None
-recommended5 = None
-recommended6 = None
+for i in range(2, 7):
+    var_name = f"recommended{i}"
+    if var_name not in st.session_state:
+        st.session_state[var_name] = None
+
+for i in range(2, 7):
+    var_name = f"remaining{i}"
+    if var_name not in st.session_state:
+        st.session_state[var_name] = None
 
 # ------------------------------------------------------------------------------
 
@@ -153,12 +154,10 @@ with body1:
         done1,
     ) = st.columns([2, 1, 1, 1, 1, 1, 2])
 
-    word1.write("")
-    word1.write("")
-    word1.write("")
-    word1.write("")
-    word1.write("")
+    for i in range(5):
+        word1.write("")
     word1.write("### S A I N T")
+    word1.write(f"Remaining: 2309")
 
     entries_list1 = []
     colors_list1 = []
@@ -188,11 +187,8 @@ with body1:
         colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
-    done1.write("")
-    done1.write("")
-    done1.write("")
-    done1.write("")
-    done1.write("")
+    for i in range(5):
+        done1.write("")
 
     if done1.button("Done", key="DoneButton1"):
         if all(item is not "" for item in entries_list1):
@@ -200,12 +196,11 @@ with body1:
                 item.lower() if isinstance(item, str) else item
                 for item in entries_list1
             ]
-            recommended2 = "".join(
-                solver.solve(letters=entries_list1, colors=colors_list1)
+            st.session_state["recommended2"] = " ".join(
+                char.upper()
+                for char in solver.solve(letters=entries_list1, colors=colors_list1)
             )
-            recommended2 = " ".join(char.upper() for char in recommended2)
-
-        # put a warning message here later if this is false
+            st.session_state["remaining2"] = len(st.session_state["words_array"])
 
 
 with body2:
@@ -219,13 +214,15 @@ with body2:
         done2,
     ) = st.columns([2, 1, 1, 1, 1, 1, 2])
 
-    if recommended2 is not None:
-        word2.write("")
-        word2.write("")
-        word2.write("")
-        word2.write("")
-        word2.write("")
-        word2.write(f"### {recommended2}")
+    if st.session_state["recommended2"] is not None:
+        for i in range(5):
+            word2.write("")
+        word2.write(f"### {st.session_state['recommended2']}")
+        if st.session_state["remaining2"] is not None:
+            word2.write(f"Remaining: {st.session_state['remaining2']}")
+
+    entries_list2 = []
+    colors_list2 = []
 
     # Initialize session states and checkboxes
     for i, col in enumerate([col21, col22, col23, col24, col25], start=1):
@@ -238,6 +235,8 @@ with body2:
 
         letter2 = col.text_input("", "", 1, key=f"body2_text{i}")
 
+        entries_list2.append(letter2)
+
         if col.button("", key=f"body2_button{i}"):
             current_state = (current_state + 1) % num_states
 
@@ -245,11 +244,46 @@ with body2:
 
         selected_color = states[current_state]["color"]
 
+        colors_list2.append(states[current_state]["name"])
+
         colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
+    for i in range(5):
+        done2.write("")
+
+    if done2.button("Done", key="DoneButton2"):
+        if all(item is not "" for item in entries_list2):
+            entries_list2 = [
+                item.lower() if isinstance(item, str) else item
+                for item in entries_list2
+            ]
+            st.session_state["recommended3"] = " ".join(
+                char.upper()
+                for char in solver.solve(letters=entries_list2, colors=colors_list2)
+            )
+            st.session_state["remaining3"] = len(st.session_state["words_array"])
+
 with body3:
-    fill31, fill32, col31, col32, col33, col34, col35, fill33, fill34 = st.columns(9)
+    (
+        word3,
+        col31,
+        col32,
+        col33,
+        col34,
+        col35,
+        done3,
+    ) = st.columns([2, 1, 1, 1, 1, 1, 2])
+
+    if st.session_state["recommended3"] is not None:
+        for i in range(5):
+            word3.write("")
+        word3.write(f"### {st.session_state['recommended3']}")
+        if st.session_state["remaining3"] is not None:
+            word3.write(f"Remaining: {st.session_state['remaining3']}")
+
+    entries_list3 = []
+    colors_list3 = []
 
     # Initialize session states and checkboxes
     for i, col in enumerate([col31, col32, col33, col34, col35], start=1):
@@ -262,6 +296,8 @@ with body3:
 
         letter3 = col.text_input("", "", 1, key=f"body3_text{i}")
 
+        entries_list3.append(letter3)
+
         if col.button("", key=f"body3_button{i}"):
             current_state = (current_state + 1) % num_states
 
@@ -269,32 +305,86 @@ with body3:
 
         selected_color = states[current_state]["color"]
 
+        colors_list3.append(states[current_state]["name"])
+
         colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
 
+    for i in range(5):
+        done3.write("")
+
+    if done3.button("Done", key="DoneButton3"):
+        if all(item is not "" for item in entries_list3):
+            entries_list3 = [
+                item.lower() if isinstance(item, str) else item
+                for item in entries_list3
+            ]
+            st.session_state["recommended4"] = " ".join(
+                char.upper()
+                for char in solver.solve(letters=entries_list3, colors=colors_list3)
+            )
+            st.session_state["remaining4"] = len(st.session_state["words_array"])
+
 with body4:
-    fill41, fill42, col41, col42, col43, col44, col45, fill43, fill44 = st.columns(9)
+    (
+        word3,
+        col31,
+        col32,
+        col33,
+        col34,
+        col35,
+        done3,
+    ) = st.columns([2, 1, 1, 1, 1, 1, 2])
+
+    if st.session_state["recommended3"] is not None:
+        for i in range(5):
+            word3.write("")
+        word3.write(f"### {st.session_state['recommended3']}")
+        if st.session_state["remaining3"] is not None:
+            word3.write(f"Remaining: {st.session_state['remaining3']}")
+
+    entries_list3 = []
+    colors_list3 = []
 
     # Initialize session states and checkboxes
-    for i, col in enumerate([col41, col42, col43, col44, col45], start=1):
-        session_state_key = f"body4_current_state{i}"
-        checkbox_state_key = f"body4_checkbox_state{i}"
-        text_state_key = f"body4_text_state{i}"
+    for i, col in enumerate([col31, col32, col33, col34, col35], start=1):
+        session_state_key = f"body3_current_state{i}"
+        checkbox_state_key = f"body3_checkbox_state{i}"
+        text_state_key = f"body3_text_state{i}"
 
         current_state = st.session_state.get(session_state_key, 0)
         checkbox_state = st.session_state.get(checkbox_state_key, False)
 
-        letter4 = col.text_input("", "", 1, key=f"body4_text{i}")
+        letter3 = col.text_input("", "", 1, key=f"body3_text{i}")
 
-        if col.button("", key=f"body4_button{i}"):
+        entries_list3.append(letter3)
+
+        if col.button("", key=f"body3_button{i}"):
             current_state = (current_state + 1) % num_states
 
         st.session_state[session_state_key] = current_state
 
         selected_color = states[current_state]["color"]
 
+        colors_list3.append(states[current_state]["name"])
+
         colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
+
+    for i in range(5):
+        done3.write("")
+
+    if done3.button("Done", key="DoneButton3"):
+        if all(item is not "" for item in entries_list3):
+            entries_list3 = [
+                item.lower() if isinstance(item, str) else item
+                for item in entries_list3
+            ]
+            st.session_state["recommended4"] = " ".join(
+                char.upper()
+                for char in solver.solve(letters=entries_list3, colors=colors_list3)
+            )
+            st.session_state["remaining4"] = len(st.session_state["words_array"])
 
     with body5:
         fill51, fill52, col51, col52, col53, col54, col55, fill53, fill54 = st.columns(
