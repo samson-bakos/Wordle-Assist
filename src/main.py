@@ -84,25 +84,21 @@ class Wordle:
         best = np.argmax(word_scores)
         return self.avail_words[best]
 
-    def filter_list(self, input):
-        keys = list(input.keys())
-
-        for key in keys:
-            color = input[key]
-
+    def filter_list(self, letters, colors):
+        for key, color in zip(letters, colors):
             if color == "gray":
                 st.session_state["words_array"] = st.session_state["words_array"][
                     ~np.any(st.session_state["words_array"] == key, axis=1)
                 ]
 
             if color == "green":
-                column = keys.index(key)
+                column = letters.index(key)
                 st.session_state["words_array"] = st.session_state["words_array"][
                     st.session_state["words_array"][:, column] == key
                 ]
 
             if color == "yellow":
-                column = keys.index(key)
+                column = letters.index(key)
                 st.session_state["words_array"] = st.session_state["words_array"][
                     st.session_state["words_array"][:, column] != key
                 ]
@@ -129,9 +125,9 @@ with header:
     st.text("Statistical Solver for the Daily Wordle Puzzle")
 
 states = [
-    {"name": "Grey", "color": "#787c7f"},
-    {"name": "Yellow", "color": "#c8b653"},
-    {"name": "Green", "color": "#6ca965"},
+    {"name": "gray", "color": "#787c7f"},
+    {"name": "yellow", "color": "#c8b653"},
+    {"name": "green", "color": "#6ca965"},
 ]
 
 num_states = len(states)
@@ -154,6 +150,9 @@ with body1:
     word1.write("")
     word1.write("### S A I N T")
 
+    entries_list1 = []
+    colors_list1 = []
+
     # Initialize session states and checkboxes
     for i, col in enumerate([col11, col12, col13, col14, col15], start=1):
         session_state_key = f"body1_current_state{i}"
@@ -165,12 +164,16 @@ with body1:
 
         letter1 = col.text_input("", "", 1, key=f"body1_text{i}")
 
+        entries_list1.append(letter1)
+
         if col.button("", key=f"body1_button{i}"):
             current_state = (current_state + 1) % num_states
 
         st.session_state[session_state_key] = current_state
 
         selected_color = states[current_state]["color"]
+
+        colors_list1.append(states[current_state]["name"])
 
         colored_checkbox = f'<div style="background-color: {selected_color}; width: 66px; height: 40px;"></div>'
         col.markdown(colored_checkbox, unsafe_allow_html=True)
@@ -182,7 +185,11 @@ with body1:
     done1.write("")
 
     if done1.button("Done", key="DoneButton1"):
-        pass
+        if all(item is not "" for item in entries_list1):
+            pass
+
+        # put a warning message here later if this is false
+
 
 with body2:
     fill21, fill22, col21, col22, col23, col24, col25, fill23, fill24 = st.columns(9)
