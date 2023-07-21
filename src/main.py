@@ -27,9 +27,9 @@ with header:
     st.text("Statistical Solver for the Daily Wordle Puzzle")
 
 states = [
-    {"name": "Grey", "color": "#808080"},
-    {"name": "Yellow", "color": "#FFFF00"},
-    {"name": "Green", "color": "#00FF00"},
+    {"name": "Grey", "color": "#787c7f"},
+    {"name": "Yellow", "color": "#c8b653"},
+    {"name": "Green", "color": "#6ca965"},
 ]
 
 num_states = len(states)
