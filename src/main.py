@@ -1,5 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import numpy as np
+import string
 
 header = st.container()
 body1 = st.container()
@@ -21,6 +23,106 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# -----------------------------------------------------
+
+
+class Wordle:
+    def __init__(self):
+        with open("../data/words.txt", "r") as file:
+            words = file.read().splitlines()
+            self.words_array = np.array([list(word) for word in words])
+
+        self.alphabet = list(string.ascii_lowercase)
+        self.alphabet_dict = {
+            letter: index for index, letter in enumerate(self.alphabet)
+        }
+
+        if "words_array" not in st.session_state:
+            st.session_state["words_array"] = self.words_array
+
+    def score_letters(self):
+        self.letter_scores = np.zeros((26, 1))
+        for i in range(0, 5):
+            scores = []
+            for letter in self.alphabet:
+                count = np.count_nonzero(
+                    st.session_state["words_array"][:, i] == letter
+                )
+                scores.append(count / len(st.session_state["words_array"]))
+            self.letter_scores = np.column_stack((self.letter_scores, scores))
+        self.letter_scores = self.letter_scores[:, 1:]
+        return self.letter_scores
+
+    @staticmethod
+    def has_unique_rows(array):
+        for row in array:
+            if len(set(row)) == len(row):
+                return True
+        return False
+
+    @staticmethod
+    def remove_non_unique_rows(array):
+        avail_list = [row for row in array if len(set(row)) == len(row)]
+        return np.array(avail_list)
+
+    def unique_check(self):
+        if has_unique_rows(st.session_state["words_array"]) == True:
+            self.avail_words = remove_non_unique_rows(st.session_state["words_array"])
+        else:
+            self.avail_words = st.session_state["words_array"]
+        return
+
+    def best_word(self, alphabet_dict):
+        word_scores = np.zeros((len(self.avail_words), 5))
+        for column in range(0, 5):
+            for row in range(0, len(self.avail_words)):
+                letter = self.avail_words[row, column]
+                index = alphabet_dict[letter]
+                word_scores[row, column] += self.letter_scores[index, column]
+
+        word_scores = np.prod(word_scores, axis=1)
+        best = np.argmax(word_scores)
+        return self.avail_words[best]
+
+    def filter_list(self, input):
+        keys = list(input.keys())
+
+        for key in keys:
+            color = input[key]
+
+            if color == "gray":
+                st.session_state["words_array"] = st.session_state["words_array"][
+                    ~np.any(st.session_state["words_array"] == key, axis=1)
+                ]
+
+            if color == "green":
+                column = keys.index(key)
+                st.session_state["words_array"] = st.session_state["words_array"][
+                    st.session_state["words_array"][:, column] == key
+                ]
+
+            if color == "yellow":
+                column = keys.index(key)
+                st.session_state["words_array"] = st.session_state["words_array"][
+                    st.session_state["words_array"][:, column] != key
+                ]
+                st.session_state["words_array"] = st.session_state["words_array"][
+                    np.any(st.session_state["words_array"] == key, axis=1)
+                ]
+
+    def solve(self, input=None):
+        if input is not None:
+            self.filter_list(input)
+        self.score_letters()
+        self.unique_check()
+        return self.best_word(self.alphabet_dict)
+
+
+solver = Wordle()
+
+
+# ------------------------------------------------------------------------------
+
 
 with header:
     st.title("Wordle Cheater")
@@ -36,16 +138,16 @@ num_states = len(states)
 
 with body1:
     (
-        fill1,
-        fill2,
+        word1,
         col11,
         col12,
         col13,
         col14,
         col15,
-        fill3,
-        fill4,
-    ) = st.columns(9)
+        done1,
+    ) = st.columns([2, 1, 1, 1, 1, 1, 2])
+
+    word1.write("### S A I N T")
 
     # Initialize session states and checkboxes
     for i, col in enumerate([col11, col12, col13, col14, col15], start=1):
