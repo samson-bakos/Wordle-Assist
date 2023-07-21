@@ -464,3 +464,7 @@ with body4:
         word5.write(f"### {st.session_state['recommended6']}")
         if st.session_state["remaining5"] is not None:
             word5.write(f"Remaining: {st.session_state['remaining6']}")
+
+
+with st.sidebar:
+    st.header("About and Usage")
