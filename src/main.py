@@ -87,20 +87,31 @@ class Wordle:
         return self.avail_words[best]
 
     def filter_list(self, letters, colors):
-        for key, color in zip(letters, colors):
+        for index, (key, color) in enumerate(zip(letters, colors)):
             if color == "gray":
-                st.session_state["words_array"] = st.session_state["words_array"][
+                temp_array = st.session_state["words_array"][
                     ~np.any(st.session_state["words_array"] == key, axis=1)
                 ]
 
+                # standard case
+                if len(temp_array) != 0:
+                    st.session_state["words_array"] = temp_array
+
+                # handle weird edge case
+                else:
+                    column = index
+                    st.session_state["words_array"] = st.session_state["words_array"][
+                        st.session_state["words_array"][:, column] != key
+                    ]
+
             if color == "green":
-                column = letters.index(key)
+                column = index
                 st.session_state["words_array"] = st.session_state["words_array"][
                     st.session_state["words_array"][:, column] == key
                 ]
 
             if color == "yellow":
-                column = letters.index(key)
+                column = index
                 st.session_state["words_array"] = st.session_state["words_array"][
                     st.session_state["words_array"][:, column] != key
                 ]
@@ -263,6 +274,7 @@ with body2:
                 for char in solver.solve(letters=entries_list2, colors=colors_list2)
             )
             st.session_state["remaining3"] = len(st.session_state["words_array"])
+
 
 with body3:
     (
