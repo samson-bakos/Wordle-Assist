@@ -23,6 +23,17 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.markdown(
+    """
+    <style>
+        section[data-testid="stSidebar"] {
+            width: 400px !important; # Set the width to your desired value
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # -----------------------------------------------------
 
 
@@ -62,6 +73,12 @@ class Wordle:
                 count = np.count_nonzero(
                     st.session_state["words_array"][:, i] == letter
                 )
+                if len(st.session_state["words_array"]) == 0:
+                    st.error(
+                        "Error! No remaining solutions. Information was entered incorrectly, or something went wrong. Please refresh and try again, or create an issue describing the situation if error persists: https://github.com/samson-bakos/Wordle-Assist",
+                        icon="🚨",
+                    )
+                    st.stop()
                 scores.append(count / len(st.session_state["words_array"]))
             self.letter_scores = np.column_stack((self.letter_scores, scores))
         self.letter_scores = self.letter_scores[:, 1:]
@@ -202,7 +219,10 @@ with body1:
         done1.write("")
 
     if done1.button("Done", key="DoneButton1"):
-        if all(item is not "" for item in entries_list1):
+        if (
+            all(item is not "" for item in entries_list1)
+            and st.session_state["recommended2"] is None
+        ):
             entries_list1 = [
                 item.lower() if isinstance(item, str) else item
                 for item in entries_list1
@@ -264,7 +284,11 @@ with body2:
         done2.write("")
 
     if done2.button("Done", key="DoneButton2"):
-        if all(item is not "" for item in entries_list2):
+        if (
+            all(item is not "" for item in entries_list2)
+            and st.session_state["recommended2"] is not None
+            and st.session_state["recommended3"] is None
+        ):
             entries_list2 = [
                 item.lower() if isinstance(item, str) else item
                 for item in entries_list2
@@ -326,7 +350,11 @@ with body3:
         done3.write("")
 
     if done3.button("Done", key="DoneButton3"):
-        if all(item is not "" for item in entries_list3):
+        if (
+            all(item is not "" for item in entries_list3)
+            and st.session_state["recommended3"] is not None
+            and st.session_state["recommended4"] is None
+        ):
             entries_list3 = [
                 item.lower() if isinstance(item, str) else item
                 for item in entries_list3
@@ -387,7 +415,11 @@ with body4:
         done4.write("")
 
     if done4.button("Done", key="DoneButton4"):
-        if all(item is not "" for item in entries_list4):
+        if (
+            all(item is not "" for item in entries_list4)
+            and st.session_state["recommended4"] is not None
+            and st.session_state["recommended5"] is None
+        ):
             entries_list4 = [
                 item.lower() if isinstance(item, str) else item
                 for item in entries_list4
@@ -448,7 +480,11 @@ with body4:
         done5.write("")
 
     if done5.button("Done", key="DoneButton5"):
-        if all(item is not "" for item in entries_list5):
+        if (
+            all(item is not "" for item in entries_list5)
+            and st.session_state["recommended5"] is not None
+            and st.session_state["recommended6"] is None
+        ):
             entries_list5 = [
                 item.lower() if isinstance(item, str) else item
                 for item in entries_list5
@@ -492,4 +528,10 @@ with st.sidebar:
     st.write(
         "3. Click the 'Done' button when you are finished. The algorithm will update and suggest a new word, along with providing the remaining number of possible solutions. Use this word, or a different word of your choice."
     )
-    st.write("4. Repeat until the puzzle is solved!")
+    st.write(
+        "4. Repeat until the puzzle is solved! If you make a mistake, the button below will reset the session, but keep your text/color entries"
+    )
+    if st.sidebar.button("Reset Information"):
+        for key in st.session_state.keys():
+            del st.session_state[key]
+        st.experimental_rerun()
