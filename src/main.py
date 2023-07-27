@@ -480,3 +480,16 @@ with body4:
 
 with st.sidebar:
     st.header("About and Usage")
+    st.write(
+        "Welcome to Wordle Cheater, a statistical solver for the daily wordle puzzle. This solver can be used to suggest the best word based on guesses you have already made, or solve the puzzle in the fewest number of steps (on average)."
+    )
+    st.write(
+        "1. Load up a wordle puzzle in another tab, and either guess a word or use the suggested word."
+    )
+    st.write(
+        "2. Enter the word you guessed in the text entry box of the first row, and use the buttons to select the corresponding colors."
+    )
+    st.write(
+        "3. Click the 'Done' button when you are finished. The algorithm will update and suggest a new word, along with providing the remaining number of possible solutions. Use this word, or a different word of your choice."
+    )
+    st.write("4. Repeat until the puzzle is solved!")
