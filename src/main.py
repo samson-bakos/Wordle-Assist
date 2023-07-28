@@ -5,7 +5,6 @@ import string
 import os
 
 
-@staticmethod
 def has_unique_rows(array):
     for row in array:
         if len(set(row)) == len(row):
@@ -13,7 +12,6 @@ def has_unique_rows(array):
     return False
 
 
-@staticmethod
 def remove_non_unique_rows(array):
     avail_list = [row for row in array if len(set(row)) == len(row)]
     return np.array(avail_list)
