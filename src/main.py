@@ -47,7 +47,7 @@ class Wordle:
                 )
                 if len(st.session_state["words_array"]) == 0:
                     st.error(
-                        "Error! No remaining solutions. Information was entered incorrectly, or something went wrong. Please refresh and try again, or create an issue describing the situation if error persists: https://github.com/samson-bakos/Wordle-Assist",
+                        "Error! No remaining solutions. Information was entered incorrectly, or something went wrong. Please refresh and try again, or create an issue describing the situation if error persists: https://github.com/samson-bakos/Wordle-Assist. Click here to refresh the page https://wordle-cheater.streamlit.app",
                         icon="🚨",
                     )
                     st.stop()
