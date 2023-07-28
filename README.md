@@ -1,5 +1,7 @@
 # Wordle-Assist
 
+#### Try it here! https://wordle-cheater.streamlit.app
+
 A project created purely out of spite because my fiance is better at wordle than I am. 
 
 This project predicts the most statistically probable solution/ solution that will provide the most information for a wordle puzzle, taking user input at each step.
