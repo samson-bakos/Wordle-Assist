@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import numpy as np
 import string
+import os
 
 
 @staticmethod
@@ -20,9 +21,15 @@ def remove_non_unique_rows(array):
 
 class Wordle:
     def __init__(self):
-        with open("../data/words.txt", "r") as file:
-            words = file.read().splitlines()
-            self.words_array = np.array([list(word) for word in words])
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        relative_file_path = "../data/words.txt"
+        absolute_file_path = os.path.join(current_dir, relative_file_path)
+        if os.path.exists(absolute_file_path):
+            with open(absolute_file_path, "r") as file:
+                words = file.read().splitlines()
+                self.words_array = np.array([list(word) for word in words])
+        else:
+            st.write("File not found:", absolute_file_path)
 
         self.alphabet = list(string.ascii_lowercase)
         self.alphabet_dict = {
