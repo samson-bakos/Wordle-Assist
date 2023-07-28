@@ -5,13 +5,15 @@ import string
 import os
 
 
+@staticmethod
 def has_unique_rows(array):
     for row in array:
         if len(set(row)) == len(row):
             return True
-        return False
+    return False
 
 
+@staticmethod
 def remove_non_unique_rows(array):
     avail_list = [row for row in array if len(set(row)) == len(row)]
     return np.array(avail_list)
@@ -61,6 +63,7 @@ class Wordle:
             self.avail_words = remove_non_unique_rows(st.session_state["words_array"])
         else:
             self.avail_words = st.session_state["words_array"]
+
         return
 
     def best_word(self, alphabet_dict):
