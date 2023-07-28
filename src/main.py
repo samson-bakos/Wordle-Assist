@@ -533,7 +533,7 @@ def main():
             "3. Click the 'Done' button when you are finished. A new word will be suggested, along with the remaining number of possible solutions. Use this word, or a different word of your choice."
         )
         st.write(
-            "4. Repeat until the puzzle is solved! If you make a mistake, the first button below will reset the session, but keep your text/color entries."
+            "4. Repeat until the puzzle is solved! If you make a mistake, the first button below will reset the session, but keep your text entries."
         )
         if st.sidebar.button("Reset"):
             for key in st.session_state.keys():
