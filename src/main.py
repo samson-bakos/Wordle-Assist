@@ -5,6 +5,18 @@ import string
 import os
 
 
+def has_unique_rows(array):
+    for row in array:
+        if len(set(row)) == len(row):
+            return True
+        return False
+
+
+def remove_non_unique_rows(array):
+    avail_list = [row for row in array if len(set(row)) == len(row)]
+    return np.array(avail_list)
+
+
 class Wordle:
     def __init__(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -24,18 +36,6 @@ class Wordle:
 
         if "words_array" not in st.session_state:
             st.session_state["words_array"] = self.words_array
-
-    @staticmethod
-    def has_unique_rows(array):
-        for row in array:
-            if len(set(row)) == len(row):
-                return True
-        return False
-
-    @staticmethod
-    def remove_non_unique_rows(array):
-        avail_list = [row for row in array if len(set(row)) == len(row)]
-        return np.array(avail_list)
 
     def score_letters(self):
         self.letter_scores = np.zeros((26, 1))
