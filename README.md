@@ -2,9 +2,9 @@
 
 ## [Try it here!](https://wordle-cheater.streamlit.app)
 
-A project created purely out of spite because my fiance is better at wordle than I am. 
+A project created because my fiance is better at Wordle than I am. 
 
-This project predicts the most statistically probable solution, taking user input at each step.
+This project predicts the most statistically probable solution to a Wordle puzzle, taking user input at each step.
 
 It can be used in one of two ways:
 
