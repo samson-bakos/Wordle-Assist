@@ -1,4 +1,2 @@
 streamlit
 numpy
-string
-os
